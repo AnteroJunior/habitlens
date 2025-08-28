@@ -1,0 +1,39 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Prometheus próprio
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # API HabitLens
+  - job_name: 'habitlens-api'
+    static_configs:
+      - targets: ['habitlens-api:3000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+    # Configurações de relabeling para melhor organização
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '([^:]+)(?::\d+)?'
+        replacement: '${1}'
+
+      - source_labels: [__address__]
+        target_label: service
+        regex: '([^:]+)(?::\d+)?'
+        replacement: 'habitlens-api'
+
+  # MongoDB (se expuser métricas)
+  - job_name: 'mongodb'
+    static_configs:
+      - targets: ['mongodb:27017']
+    scrape_interval: 30s
