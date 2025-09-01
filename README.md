@@ -1,6 +1,6 @@
 # HabitLens API
 
-API para gerenciamento de hábitos e métricas pessoais, construída com NestJS, MongoDB, Prometheus e Grafana.
+API para gerenciamento de hábitos e métricas pessoais, construída com NestJS, MongoDB, Prometheus e Grafana para fins educacionais e apresentação de projeto na disciplina Programação V.
 
 ## 🚀 Funcionalidades
 
@@ -14,7 +14,7 @@ API para gerenciamento de hábitos e métricas pessoais, construída com NestJS,
 ## 🛠️ Tecnologias
 
 - **Backend**: NestJS (Node.js)
-- **Banco de Dados**: MongoDB
+- **Banco de Dados**: MongoDB + Mongoose
 - **Autenticação**: JWT + Passport
 - **Monitoramento**: Prometheus + Grafana
 - **Documentação**: Swagger/OpenAPI
@@ -171,18 +171,10 @@ docker-compose logs prometheus
 docker-compose logs grafana
 ```
 
-## 🤝 Contribuição
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
 ## 📄 Licença
 
 Este projeto está sob a licença UNLICENSED.
 
-## 📞 Suporte
+## Autor
 
-Para suporte, abra uma issue no repositório ou entre em contato com a equipe de desenvolvimento.
+Antero Arcanjo

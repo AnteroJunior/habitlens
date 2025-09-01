@@ -37,11 +37,10 @@ export class HabitsController {
     schema: {
       example: [
         {
-          id: '507f1f77bcf86cd799439011',
           name: 'Exercitar-se',
-          userId: '507f1f77bcf86cd799439011',
           checkins: [],
           createdAt: '2024-01-01T00:00:00.000Z',
+          updatedAt: '2024-01-01T00:00:00.000Z'
         },
       ],
     },
@@ -61,11 +60,10 @@ export class HabitsController {
       example: {
         message: 'Hábito criado com sucesso',
         habit: {
-          id: '507f1f77bcf86cd799439011',
           name: 'Exercitar-se',
-          userId: '507f1f77bcf86cd799439011',
           checkins: [],
           createdAt: '2024-01-01T00:00:00.000Z',
+          updatedAt: '2024-01-01T00:00:00.000Z',
         },
       },
     },

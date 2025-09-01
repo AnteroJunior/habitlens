@@ -1,49 +1,50 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, MongooseHealthIndicator } from '@nestjs/terminus';
+import { Response } from 'express';
 import { register, collectDefaultMetrics, Counter, Histogram, Gauge } from 'prom-client';
 
 // Configuração das métricas do Prometheus
 const httpRequestsTotal = new Counter({
-  name: 'http_requests_total',
+  name: 'http_requests_total_habitlens',
   help: 'Total de requisições HTTP',
   labelNames: ['method', 'route', 'status_code'],
 });
 
 const httpRequestDuration = new Histogram({
-  name: 'http_request_duration_seconds',
+  name: 'http_request_duration_seconds_habitlens',
   help: 'Duração das requisições HTTP em segundos',
   labelNames: ['method', 'route'],
   buckets: [0.1, 0.5, 1, 2, 5],
 });
 
 const activeUsers = new Gauge({
-  name: 'active_users_total',
+  name: 'active_users_total_habitlens',
   help: 'Total de usuários ativos',
 });
 
 const habitsCreated = new Counter({
-  name: 'habits_created_total',
+  name: 'habits_created_total_habitlens',
   help: 'Total de hábitos criados',
 });
 
 const checkinsTotal = new Counter({
-  name: 'checkins_total',
+  name: 'checkins_total_habitlens',
   help: 'Total de check-ins realizados',
 });
-
-// Coletar métricas padrão do Node.js
-collectDefaultMetrics();
 
 @Controller('metrics')
 export class MetricsController {
   constructor(
     private health: HealthCheckService,
     private mongoose: MongooseHealthIndicator,
-  ) {}
+  ) {
+    collectDefaultMetrics();
+  }
 
   @Get()
-  async getMetrics() {
-    return await register.metrics();
+  async getMetrics(@Res() res: Response) {
+    res.setHeader('Content-Type', 'text/plain');
+    res.send(await register.metrics());
   }
 
   @Get('health')

@@ -1,39 +1,19 @@
 global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+  scrape_interval: 15s # By default, scrape targets every 15 seconds.
 
-rule_files:
-  # - "first_rules.yml"
-  # - "second_rules.yml"
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  # external_labels:
+  #   monitor: 'codelab-monitor'
 
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
 scrape_configs:
-  # Prometheus próprio
-  - job_name: 'prometheus'
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus-and-habitlens'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
     static_configs:
-      - targets: ['localhost:9090']
-
-  # API HabitLens
-  - job_name: 'habitlens-api'
-    static_configs:
-      - targets: ['habitlens-api:3000']
-    metrics_path: '/api/metrics'
-    scrape_interval: 10s
-    scrape_timeout: 5s
-
-    # Configurações de relabeling para melhor organização
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
-        regex: '([^:]+)(?::\d+)?'
-        replacement: '${1}'
-
-      - source_labels: [__address__]
-        target_label: service
-        regex: '([^:]+)(?::\d+)?'
-        replacement: 'habitlens-api'
-
-  # MongoDB (se expuser métricas)
-  - job_name: 'mongodb'
-    static_configs:
-      - targets: ['mongodb:27017']
-    scrape_interval: 30s
+      - targets: ['localhost:9090', 'host.docker.internal:3000']

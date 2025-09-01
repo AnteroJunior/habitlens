@@ -1,143 +1,209 @@
 {
-  "dashboard": {
-    "id": null,
-    "title": "HabitLens API Dashboard",
-    "tags": ["habitlens", "api", "monitoring"],
-    "style": "dark",
-    "timezone": "browser",
-    "panels": [
+  "annotations": {
+    "list": [
       {
-        "id": 1,
-        "title": "Total de Requisições HTTP",
-        "type": "stat",
-        "targets": [
-          {
-            "expr": "sum(http_requests_total)",
-            "legendFormat": "Total Requests"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "displayMode": "auto"
-            }
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bewknaoz94g74d"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           }
         },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 0
-        }
+        "overrides": []
       },
-      {
-        "id": 2,
-        "title": "Requisições por Status Code",
-        "type": "piechart",
-        "targets": [
-          {
-            "expr": "sum by (status_code) (http_requests_total)",
-            "legendFormat": "{{status_code}}"
-          }
-        ],
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 0
-        }
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
       },
-      {
-        "id": 3,
-        "title": "Duração das Requisições",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
-            "legendFormat": "95th percentile"
-          },
-          {
-            "expr": "histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
-            "legendFormat": "50th percentile"
-          }
-        ],
-        "yAxes": [
-          {
-            "label": "Duration (seconds)",
-            "unit": "s"
-          }
-        ],
-        "gridPos": {
-          "h": 8,
-          "w": 24,
-          "x": 0,
-          "y": 8
-        }
+      "id": 3,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      {
-        "id": 4,
-        "title": "Requisições por Rota",
-        "type": "barchart",
-        "targets": [
-          {
-            "expr": "sum by (route) (rate(http_requests_total[5m]))",
-            "legendFormat": "{{route}}"
-          }
-        ],
-        "yAxes": [
-          {
-            "label": "Requests per second"
-          }
-        ],
-        "gridPos": {
-          "h": 8,
-          "w": 24,
-          "x": 0,
-          "y": 16
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "checkins_total_habitlens",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
         }
-      },
-      {
-        "id": 5,
-        "title": "Hábitos Criados",
-        "type": "stat",
-        "targets": [
-          {
-            "expr": "habits_created_total",
-            "legendFormat": "Total Habits Created"
-          }
-        ],
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 24
-        }
-      },
-      {
-        "id": 6,
-        "title": "Total de Check-ins",
-        "type": "stat",
-        "targets": [
-          {
-            "expr": "checkins_total",
-            "legendFormat": "Total Check-ins"
-          }
-        ],
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 24
-        }
-      }
-    ],
-    "time": {
-      "from": "now-1h",
-      "to": "now"
+      ],
+      "title": "CheckIns",
+      "type": "gauge"
     },
-    "refresh": "5s"
-  }
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bewknaoz94g74d"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bewknaoz94g74d"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "http_requests_total_habitlens",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Requests",
+          "useBackend": false
+        }
+      ],
+      "title": "Total de requisições",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Prometheus Metrics",
+  "uid": "e09074f8-7e0f-4757-ba04-d9f4aaaf3a68",
+  "version": 8
 }
