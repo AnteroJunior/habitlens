@@ -35,6 +35,11 @@ RUN npm ci && npm cache clean --force
 # Copiar código buildado do stage anterior
 COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
 
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/tsconfig.json ./
+
+COPY entrypoint.sh ./
+
 # Copiar arquivos de configuração
 COPY --chown=nestjs:nodejs .env* ./
 
@@ -44,5 +49,4 @@ USER nestjs
 # Expor porta
 EXPOSE 3000
 
-# Comando de inicialização
-CMD ["node", "dist/main.js"]
+CMD ["sh", "./entrypoint.sh"]

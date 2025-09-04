@@ -7,34 +7,34 @@ services:
     restart: unless-stopped
     ports:
       - '3000:3000'
-    environment:
-      - PORT=3000
-      - DB_HOST=mongodb
-      - DB_PORT=27017
-      - DB_NAME=habitlens
     depends_on:
-      mongodb:
+      mysql_db:
         condition: service_healthy
     networks:
       - habitlens-network
-  mongodb:
-    image: mongodb/mongodb-community-server:latest
-    container_name: habitlens-mongodb
+
+  mysql_db:
+    image: mysql:9
+    container_name: habitlens-mysql
     restart: unless-stopped
     ports:
-      - '27017:27017'
+      - '3306:3306'
     environment:
-      - MONGO_INITDB_DATABASE=habitlens
+      - MYSQL_DATABASE=habitlens
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_ROOT_PASSWORD=test
     volumes:
-      - mongodb_data:/data/db
+      - mysql_dataaa:/var/lib/mysql
     healthcheck:
-      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
     networks:
       - habitlens-network
+
   prometheus:
     image: prom/prometheus:latest
     container_name: habitlens-prometheus
@@ -93,7 +93,7 @@ services:
       - habitlens-network
 
 volumes:
-  mongodb_data:
+  mysql_dataaa:
     driver: local
   prometheus_data:
     driver: local

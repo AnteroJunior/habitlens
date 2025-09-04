@@ -16,4 +16,4 @@ scrape_configs:
     scrape_interval: 5s
 
     static_configs:
-      - targets: ['localhost:9090', 'host.docker.internal:3000']
+      - targets: ['localhost:9090', 'habitlens-api:3000']
