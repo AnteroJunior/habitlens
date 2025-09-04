@@ -3,16 +3,17 @@ import { AuthModule } from './modules/auth/auth.module';
 import { HabitsModule } from './modules/habits/habits.module';
 import { MetricsModule } from './modules/metrics/metrics.module';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MetricsInterceptor } from './interceptors/metrics.interceptor';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppDataSource } from './database/data-source';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(
-      `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-    ),
+    TypeOrmModule.forRoot({
+      ...AppDataSource.options,
+    }),
     AuthModule,
     HabitsModule,
     MetricsModule,

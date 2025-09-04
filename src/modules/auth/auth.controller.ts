@@ -2,7 +2,12 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
 @ApiTags('Autenticação')
 @Controller('auth')
@@ -11,8 +16,8 @@ export class AuthController {
 
   @Post('signup')
   @ApiOperation({ summary: 'Cadastrar novo usuário' })
-  @ApiResponse({ 
-    status: 201, 
+  @ApiResponse({
+    status: 201,
     description: 'Usuário criado com sucesso',
     schema: {
       example: {
@@ -20,10 +25,10 @@ export class AuthController {
         user: {
           id: '507f1f77bcf86cd799439011',
           name: 'João Silva',
-          email: 'joao@example.com'
-        }
-      }
-    }
+          email: 'joao@example.com',
+        },
+      },
+    },
   })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 409, description: 'Usuário já existe' })
@@ -38,8 +43,8 @@ export class AuthController {
 
   @Post('signin')
   @ApiOperation({ summary: 'Fazer login do usuário' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Login realizado com sucesso',
     schema: {
       example: {
@@ -47,10 +52,10 @@ export class AuthController {
         user: {
           id: '507f1f77bcf86cd799439011',
           name: 'João Silva',
-          email: 'joao@example.com'
-        }
-      }
-    }
+          email: 'joao@example.com',
+        },
+      },
+    },
   })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 401, description: 'Credenciais inválidas' })

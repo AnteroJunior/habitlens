@@ -1,22 +1,21 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { User } from 'src/database/schemas/user.schema';
-import { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entity/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectRepository(User) private userRepository: Repository<User>,
     private readonly jwtService: JwtService,
   ) {}
 
   async register(user: CreateUserDto) {
-    const exists = await this.userModel.findOne({ email: user.email }).exec();
-    console.log(exists);
+    const exists = await this.userRepository.findOneBy({ email: user.email });
     if (exists) {
       throw new ConflictException('Email já cadastrado');
     }
@@ -24,26 +23,33 @@ export class AuthService {
     const hashPassword = bcrypt.hashSync(user.password, 10);
     user.password = hashPassword;
 
-    const newUser = new this.userModel(user);
-    return await newUser.save();
+    const newUser = Object.assign(new User(), user);
+
+    return this.userRepository.save(newUser);
   }
 
   async login(user: LoginDto) {
-    const exists = await this.userModel.findOne({ email: user.email }).exec();
-    if (!exists) {
+    const userExists = await this.userRepository.findOneBy({
+      email: user.email,
+    });
+
+    if (!userExists) {
       throw new ConflictException('Email não cadastrado');
     }
 
-    const isValid = bcrypt.compareSync(user.password, exists.password);
+    const isValid = bcrypt.compareSync(user.password, userExists.password);
     if (!isValid) {
       throw new ConflictException('Senha inválida');
     }
 
-    const payload = { name: exists.name, sub: exists._id, email: exists.email };
+    const payload = {
+      name: userExists.name,
+      sub: userExists.id,
+      email: userExists.email,
+    };
+
     return {
       access_token: this.jwtService.sign(payload),
     };
-
-    return exists;
   }
 }

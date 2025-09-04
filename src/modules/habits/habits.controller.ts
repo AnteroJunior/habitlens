@@ -5,6 +5,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Post,
   Put,
   Request,
@@ -37,10 +38,11 @@ export class HabitsController {
     schema: {
       example: [
         {
+          id: 'asd12321-adsad123123-adasd123-adsasda121',
           name: 'Exercitar-se',
           checkins: [],
           createdAt: '2024-01-01T00:00:00.000Z',
-          updatedAt: '2024-01-01T00:00:00.000Z'
+          updatedAt: '2024-01-01T00:00:00.000Z',
         },
       ],
     },
@@ -56,17 +58,6 @@ export class HabitsController {
   @ApiResponse({
     status: 201,
     description: 'Hábito criado com sucesso',
-    schema: {
-      example: {
-        message: 'Hábito criado com sucesso',
-        habit: {
-          name: 'Exercitar-se',
-          checkins: [],
-          createdAt: '2024-01-01T00:00:00.000Z',
-          updatedAt: '2024-01-01T00:00:00.000Z',
-        },
-      },
-    },
   })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 401, description: 'Não autorizado' })
@@ -75,7 +66,8 @@ export class HabitsController {
     @Body() habit: CreateHabitDto,
   ) {
     try {
-      return await this.habitsService.createHabit(req.user.id, habit);
+      await this.habitsService.createHabit(req.user.id, habit);
+      return { message: 'Hábito criado com sucesso' };
     } catch (error: any) {
       return { message: error.message };
     }
@@ -101,25 +93,15 @@ export class HabitsController {
     @Body() informations: UpdateHabitDto,
   ) {
     try {
-      return await this.habitsService.changeHabit(req.user.id, informations);
+      await this.habitsService.changeHabitName(req.user.id, informations);
+      return { message: 'Hábito alterado com sucesso' };
     } catch (error: any) {
       return { message: error.message };
     }
   }
 
-  @Post('checkin')
+  @Post('checkin/:id')
   @ApiOperation({ summary: 'Fazer check-in em um hábito' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        name: {
-          type: 'string',
-          example: 'Exercitar-se',
-        },
-      },
-    },
-  })
   @ApiResponse({
     status: 200,
     description: 'Check-in realizado com sucesso',
@@ -134,28 +116,17 @@ export class HabitsController {
   @ApiResponse({ status: 404, description: 'Hábito não encontrado' })
   async checkIn(
     @Request() req: { user: { id: string } },
-    @Body() habit: { name: string },
+    @Param('id') id: string,
   ) {
     try {
-      return await this.habitsService.checkIn(req.user.id, habit.name);
+      return await this.habitsService.checkIn(req.user.id, id);
     } catch (error: any) {
       return { message: error.message };
     }
   }
 
-  @Delete()
+  @Delete(':id')
   @ApiOperation({ summary: 'Deletar um hábito' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        name: {
-          type: 'string',
-          example: 'Exercitar-se',
-        },
-      },
-    },
-  })
   @ApiResponse({
     status: 200,
     description: 'Hábito deletado com sucesso',
@@ -170,10 +141,11 @@ export class HabitsController {
   @ApiResponse({ status: 404, description: 'Hábito não encontrado' })
   async deleteHabit(
     @Request() req: { user: { id: string } },
-    @Body() habit: { name: string },
+    @Param('id') id: string,
   ) {
     try {
-      return await this.habitsService.deleteHabit(req.user.id, habit.name);
+      await this.habitsService.deleteHabit(req.user.id, id);
+      return { message: 'Hábito deletado com sucesso' };
     } catch (error: any) {
       return { message: error.message };
     }

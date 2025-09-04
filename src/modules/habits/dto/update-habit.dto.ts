@@ -3,12 +3,12 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateHabitDto {
   @ApiProperty({
-    description: 'Nome atual do hábito',
-    example: 'Exercitar-se',
+    description: 'Id do hábito',
+    example: '123a-456b-789c',
   })
   @IsString()
   @IsNotEmpty()
-  currentName: string;
+  id: string;
 
   @ApiProperty({
     description: 'Novo nome do hábito',
@@ -16,5 +16,5 @@ export class UpdateHabitDto {
   })
   @IsString()
   @IsNotEmpty()
-  newName: string;
+  name: string;
 }

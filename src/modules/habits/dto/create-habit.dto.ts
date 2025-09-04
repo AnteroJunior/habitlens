@@ -3,8 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateHabitDto {
   @ApiProperty({
-    description: 'Nome do hábito',
-    example: 'Exercitar-se',
+    name: 'name',
+    example: 'Fazer exercícios',
   })
   @IsString()
   @IsNotEmpty()
